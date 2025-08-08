@@ -1,0 +1,17 @@
+{
+  "name": "inventory_application",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "server": "nodemon app"
+  },
+  "keywords": [],
+  "author": "Victor Mwadime <victormwadime@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "nodemon": "^3.1.10"
+  }
+}
