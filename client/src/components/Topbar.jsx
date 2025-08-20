@@ -13,8 +13,11 @@ export default function Topbar() {
             to="/"
             sx={{ color: "inherit", textDecoration: "none", flexGrow: 1 }}
           >
-            Books Inventory
+            Books
           </Typography>
+          <Button component={RouterLink} to="/authors" color="inherit">
+            Authors
+          </Button>
         </Toolbar>
       </Container>
     </AppBar>
