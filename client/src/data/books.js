@@ -1,4 +1,4 @@
-const sample = [
+const books = [
   {
     id: "1",
     title: "Clean Code",
@@ -28,4 +28,4 @@ const sample = [
   },
 ];
 
-export default sample;
+export default books;
