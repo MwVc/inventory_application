@@ -11,12 +11,14 @@ export function BooksProvider({ children }) {
   const actions = useMemo(
     () => ({
       list: () => books,
-      getById: (id) => books.find((b) => b.id == id),
+      getById: (id) => books.find((book) => book.id == id),
       create: (payload) =>
         setBooks((prev) => [...prev, { ...payload, id: String(Date.now()) }]),
       update: (id, patch) =>
-        setBooks((prev) => prev.map((b) => (b.id == id ? { ...b, patch } : b))),
-      remove: (id) => setBooks((prev) => prev.filter((b) => b.id !== id)),
+        setBooks((prev) =>
+          prev.map((book) => (book.id == id ? { ...book, patch } : book))
+        ),
+      remove: (id) => setBooks((prev) => prev.filter((book) => book.id !== id)),
     }),
     [books]
   );
