@@ -25,25 +25,25 @@ export default function BookTable({ books, onDelete }) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {books.map((b) => (
-            <TableRow key={b.id}>
-              <TableCell>{b.title}</TableCell>
-              <TableCell>{b.author}</TableCell>
-              <TableCell>{b.category}</TableCell>
-              <TableCell>{(b.price / 100).toFixed(2)}</TableCell>
-              <TableCell>{b.stock}</TableCell>
+          {books.map((book) => (
+            <TableRow key={book.id}>
+              <TableCell>{book.title}</TableCell>
+              <TableCell>{book.author}</TableCell>
+              <TableCell>{book.category}</TableCell>
+              <TableCell>{(book.price / 100).toFixed(2)}</TableCell>
+              <TableCell>{book.stock}</TableCell>
               <TableCell align="right">
                 <Stack direction="row" spacing={1} justifyContent="flex-end">
                   <Button
                     component={RouterLink}
-                    to={`/books/${b.id}`}
+                    to={`/books/${book.id}`}
                     size="small"
                   >
                     View
                   </Button>
                   <Button
                     component={RouterLink}
-                    to={`/edit/${b.id}`}
+                    to={`/edit/${book.id}`}
                     size="small"
                   >
                     Edit
@@ -51,7 +51,7 @@ export default function BookTable({ books, onDelete }) {
                   <Button
                     color="error"
                     size="small"
-                    onClick={() => onDelete(b.id)}
+                    onClick={() => onDelete(book.id)}
                   >
                     Delete
                   </Button>
