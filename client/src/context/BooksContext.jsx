@@ -1,12 +1,12 @@
 import React, { createContext, useContext, useMemo, useState } from "react";
-import sample from "../data/sampleBooks";
+import booksData from "../data/books";
 
 const BooksContext = createContext(null);
 
 export function BooksProvider({ children }) {
   // in memory store (resets on refresh)
 
-  const [books, setBooks] = useState(sample);
+  const [books, setBooks] = useState(booksData);
 
   const actions = useMemo(
     () => ({
