@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import Topbar from "./components/Topbar";
+import Authors from "./pages/Authors";
 import Home from "./pages/Home";
 import AddBook from "./pages/AddBook";
 import EditBook from "./pages/EditBook";
@@ -18,6 +19,7 @@ export default function App() {
         <Container maxWidth="lg">
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/authors" element={<Authors />} />
             <Route path="/add" element={<AddBook />} />
             <Route path="/edit/:id" element={<EditBook />} />
             <Route path="/books/:id" element={<BookDetails />} />
