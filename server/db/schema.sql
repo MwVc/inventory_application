@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS authors;
 DROP TABLE IF EXISTS books;
 
-CREATE TABLE authors (
+CREATE TABLE genre (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL
 );
