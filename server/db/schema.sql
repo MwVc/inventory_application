@@ -9,10 +9,9 @@ CREATE TABLE authors (
 create TABLE books (
     id SERIAL PRIMARY KEY,
     title VARCHAR(100) NOT NULL,
-    published_year INT,
+    stock INT,
     author REFERENCES author(id) ON DELETE CASCADE,
-    isbn VARCHAR(17) NOT NULL CHECK (isbn ~ '^[0-9\-]+$'),
-    genre VARCHAR(100)
+    category VARCHAR(100)
 
 
 );  
