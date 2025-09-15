@@ -3,12 +3,14 @@ require("dotenv").config();
 const PORT = process.env.PORT || 5050;
 
 // import routes
-const indexRouter = require("./routes/indexRouter");
+const booksRouter = require("./routes/booksRouter");
+
+// import error handler
 const errorHandler = require("./middleware/errorMiddleware");
 
 const app = express();
 
-app.use("/api", indexRouter);
+app.use("/api", booksRouter);
 app.use(errorHandler);
 
 app.listen(PORT, () => {
