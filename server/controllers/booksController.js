@@ -21,4 +21,10 @@ const getBookById = async (req, res, next) => {
   }
 };
 
-module.exports = { getAllBooks, getBookById };
+const createBook = async (req, res, next) => {
+  // const { title, stock, author, genre_id } = req.params;
+  console.log(req.body);
+  res.end();
+};
+
+module.exports = { getAllBooks, getBookById, createBook };
