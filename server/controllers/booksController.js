@@ -1,4 +1,4 @@
-const { validationResult } = require("express-validator");
+const { validationResult, matchedData } = require("express-validator");
 const { dbGetBooks, dbGetBookById, dbAddBook } = require("../db/queries");
 
 const getAllBooks = async (req, res, next) => {
@@ -23,17 +23,21 @@ const getBookById = async (req, res, next) => {
 };
 
 const createBook = async (req, res, next) => {
-  // try {
-  //   const book = await dbAddBook(req.body);
-  //   console.log(book);
-  //   res.status(200).json(book);
-  // } catch (error) {
-  //   console.log(error);
-  //   next();
-  // }
-
   const result = validationResult(req);
-  console.log(req.body, result.array());
+  const bookData = matchedData(req);
+
+  if (result.isEmpty()) {
+    try {
+      const book = await dbAddBook(bookData);
+      res.status(200).json(book);
+      return;
+    } catch (error) {
+      console.log(error);
+      next(error);
+    }
+  }
+
+  return res.status(400).json({ errors: result.array() });
 };
 
 module.exports = { getAllBooks, getBookById, createBook };
