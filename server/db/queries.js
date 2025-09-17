@@ -17,7 +17,23 @@ async function dbGetBookById(bookId) {
   return rows;
 }
 
+async function dbAddBook({ title, stock, author, genre_id }) {
+  const { rows } = await pool.query(
+    "INSERT INTO books (title, stock, author, genre_id) VALUES ($1, $2, $3, $4) RETURNING *",
+    [title, stock, author, genre_id]
+  );
+
+  console.log(rows);
+
+  if (rows.length === 0) {
+    throw new Error("Error adding book");
+  }
+
+  return rows;
+}
+
 module.exports = {
   dbGetBooks,
   dbGetBookById,
+  dbAddBook,
 };
