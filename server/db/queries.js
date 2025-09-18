@@ -2,6 +2,12 @@ const pool = require("./pool");
 
 async function dbGetBooks() {
   const { rows } = await pool.query("SELECT * FROM books");
+  if (rows.length === 0) {
+    const error = new Error("Books not found");
+    error.statusCode = 404;
+    throw error;
+  }
+
   return rows;
 }
 
