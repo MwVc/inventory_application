@@ -49,10 +49,8 @@ const createBook = async (req, res, next) => {
 const deleteBook = async (req, res, next) => {
   const { book_id } = req.params;
   try {
-    const response = await dbDeleteBook(book_id);
-    res
-      .status(200)
-      .json({ message: "Book deleted successfully", data: response });
+    await dbDeleteBook(book_id);
+    res.status(200).json({ message: "Book deleted successfully" });
   } catch (error) {
     next(error);
     return;
