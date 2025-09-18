@@ -11,7 +11,9 @@ async function dbGetBookById(bookId) {
     [bookId]
   );
   if (rows.length === 0) {
-    throw new Error(`Book not found`);
+    const error = new Error(`Book not found`);
+    error.statusCode = 404;
+    throw error;
   }
 
   return rows;
@@ -23,11 +25,10 @@ async function dbAddBook({ title, stock, author, genre_id }) {
     [title, stock, author, genre_id]
   );
 
-  console.log(rows);
-
   if (rows.length === 0) {
     const error = new Error("Error adding book");
     error.statusCode = 422;
+    throw error;
   }
 
   return rows;
