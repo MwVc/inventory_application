@@ -22,8 +22,8 @@ const getBookById = async (req, res, next) => {
     const book = await dbGetBookById(bookId);
     res.status(200).json({ book: book });
   } catch (error) {
-    console.log(error);
     next(error);
+    return;
   }
 };
 
