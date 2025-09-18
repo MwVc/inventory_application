@@ -41,14 +41,17 @@ async function dbAddBook({ title, stock, author, genre_id }) {
 }
 
 async function dbDeleteBook(id) {
-  const { rows } = await pool.query("DELETE FROM books WHERE id = $1", [id]);
-  if (rows.length === 0) {
+  const { rowCount } = await pool.query("DELETE FROM books WHERE id = $1", [
+    id,
+  ]);
+
+  if (rowCount === 0) {
     const error = new Error("Cannot delete. Book not found");
     error.statusCode = 404;
     throw error;
   }
 
-  return rows;
+  return;
 }
 
 module.exports = {
