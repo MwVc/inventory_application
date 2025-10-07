@@ -1,8 +1,4 @@
-const {
-  validationResult,
-  matchedData,
-  matchedData,
-} = require("express-validator");
+const { validationResult, matchedData } = require("express-validator");
 
 const {
   dbGetBooks,
