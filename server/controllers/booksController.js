@@ -1,9 +1,15 @@
-const { validationResult, matchedData } = require("express-validator");
+const {
+  validationResult,
+  matchedData,
+  matchedData,
+} = require("express-validator");
+
 const {
   dbGetBooks,
   dbGetBookById,
   dbAddBook,
   dbDeleteBook,
+  dbUpdateBook,
 } = require("../db/queries");
 
 const getAllBooks = async (req, res, next) => {
@@ -46,6 +52,21 @@ const createBook = async (req, res, next) => {
   return res.status(400).json({ errors: result.array() });
 };
 
+const updateBook = async (req, res, next) => {
+  const result = validationResult(req);
+  const bookData = { ...matchedData(req), book_id: req.params.id };
+
+  try {
+    if (result.isEmpty()) {
+      await dbUpdateBook(bookData);
+      res.status(200).json({ message: "Book updated successfully" });
+    }
+  } catch (error) {
+    next(error);
+    return;
+  }
+};
+
 const deleteBook = async (req, res, next) => {
   const { book_id } = req.params;
   try {
@@ -57,4 +78,10 @@ const deleteBook = async (req, res, next) => {
   }
 };
 
-module.exports = { getAllBooks, getBookById, createBook, deleteBook };
+module.exports = {
+  getAllBooks,
+  getBookById,
+  createBook,
+  deleteBook,
+  updateBook,
+};
