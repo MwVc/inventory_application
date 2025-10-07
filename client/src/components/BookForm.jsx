@@ -1,13 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-export default function BookForm({ addBook }) {
+export default function BookForm({ addBook, updateBook, editingBook }) {
   // local state for form inputs
   const [formData, setFormData] = useState({
+    id: null,
     title: "",
     author: "",
     category: "",
     quantity: "",
   });
+
+  // when editingBook changes pre-fill the form
+  useEffect(() => {
+    if (editingBook) {
+      setFormData(editingBook);
+    }
+  }, [editingBook]);
 
   // handle input changes
   const handleChange = (event) => {
@@ -31,8 +39,13 @@ export default function BookForm({ addBook }) {
       return;
     }
 
-    // send data up to Dashboard
-    addBook(formData);
+    if (formData.id) {
+      // editing existing book
+      updateBook(formData);
+    } else {
+      // add new book
+      addBook(formData);
+    }
 
     // clear form input after submission
     setFormData({ title: "", author: "", category: "", quantity: "" });
@@ -40,7 +53,9 @@ export default function BookForm({ addBook }) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <h2 className="text-xl font-semibold mb-2">Add New Book</h2>
+      <h2 className="text-xl font-semibold mb-2">
+        {formData.id ? "Edit Book" : "Add New Book"}
+      </h2>
 
       <input
         type="text"
@@ -83,7 +98,7 @@ export default function BookForm({ addBook }) {
         type="submit"
         className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700"
       >
-        Add Book
+        {formData.id ? "Save changes" : "Add Book"}
       </button>
     </form>
   );
