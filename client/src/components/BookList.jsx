@@ -1,4 +1,4 @@
-export default function BookList({ books, deleteBook }) {
+export default function BookList({ books, deleteBook, startEditing }) {
   console.log(books);
   return (
     <div className="container">
@@ -26,7 +26,13 @@ export default function BookList({ books, deleteBook }) {
                   <td className="p-2 border">{book.author}</td>
                   <td className="p-2 border">{book.category}</td>
                   <td className="p-2 border text-center">{book.quantity}</td>
-                  <td className="p-2 border text-center">
+                  <td className="p-2 border text-center space-x-2">
+                    <button
+                      className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600"
+                      onClick={() => startEditing(book)}
+                    >
+                      Edit
+                    </button>
                     <button
                       className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
                       onClick={() => deleteBook(book.id)}
