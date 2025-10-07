@@ -14,7 +14,21 @@ export default function Dashboard() {
     },
   ]);
 
-  console.log(books);
+  // track which book is currently being edited
+  const [editingBook, setEditingBook] = useState(null);
+
+  // start editing book
+  const startEditing = (book) => {
+    setEditingBook(book);
+  };
+
+  // save the edited book
+  const updateBook = (updateBook) => {
+    setBooks(
+      books.map((book) => (book.id === updateBook.id ? updateBook : book))
+    );
+    setEditingBook(null);
+  };
 
   // add a placeholder function (to be implemented later)
   const addBook = (newBook) => {
@@ -30,10 +44,18 @@ export default function Dashboard() {
       <h1 className="text-3xl font-bold mb-6 text-center">Book_Inventory</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="bg-white p-4 rounded-xl shadow">
-          <BookForm addBook={addBook} />
+          <BookForm
+            addBook={addBook}
+            updateBook={updateBook}
+            editingBook={editingBook}
+          />
         </div>
         <div className="bg-white p-4 rounded-xl shadow">
-          <BookList books={books} deleteBook={deleteBook} />
+          <BookList
+            books={books}
+            deleteBook={deleteBook}
+            startEditing={startEditing}
+          />
         </div>
       </div>
     </div>
