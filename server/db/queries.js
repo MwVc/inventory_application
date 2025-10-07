@@ -13,7 +13,7 @@ async function dbGetBooks() {
 
 async function dbGetBookById(bookId) {
   const { rows } = await pool.query(
-    "SELECT books.*, genres.name AS genre_name FROM books INNER JOIN genres ON books.genre_id = genres.id WHERE books.id = ($1)",
+    "SELECT books.*, genres.name AS genre_name FROM books INNER JOIN genres ON books.genre_id = genres.id WHERE books.id = ($1);",
     [bookId]
   );
   if (rows.length === 0) {
@@ -27,7 +27,7 @@ async function dbGetBookById(bookId) {
 
 async function dbAddBook({ title, stock, author, genre_id }) {
   const { rows } = await pool.query(
-    "INSERT INTO books (title, stock, author, genre_id) VALUES ($1, $2, $3, $4) RETURNING *",
+    "INSERT INTO books (title, stock, author, genre_id) VALUES ($1, $2, $3, $4) RETURNING *;",
     [title, stock, author, genre_id]
   );
 
@@ -38,6 +38,20 @@ async function dbAddBook({ title, stock, author, genre_id }) {
   }
 
   return rows;
+}
+
+async function dbUpdateBook({ title, stock, author, genre_id, book_id }) {
+  const { rowCount } = await pool.query(
+    "UPDATE books SET title=$1, stock=$2, author=$3, genre_id=$4 WHERE id=$5;",
+    [title, stock, author, genre_id, book_id]
+  );
+
+  if (rowCount === 0) {
+    const error = new Error("Error updating book");
+    error.statusCode = 422;
+    throw error;
+  }
+  return;
 }
 
 async function dbDeleteBook(id) {
@@ -59,4 +73,5 @@ module.exports = {
   dbGetBookById,
   dbAddBook,
   dbDeleteBook,
+  dbUpdateBook,
 };
