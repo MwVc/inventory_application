@@ -1,7 +1,7 @@
-import React from "react";
+import Dashboard from "./pages/Dashboard";
 
 const App = () => {
-  return <div className="text-3xl font-bold underline">App</div>;
+  return <Dashboard />;
 };
 
 export default App;
