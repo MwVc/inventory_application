@@ -9,3 +9,16 @@ export const fetchAllBooks = async () => {
     console.log(error);
   }
 };
+
+export const createBook = async (bookData) => {
+  try {
+    const response = await axios.post(
+      "http://localhost:5000/api/books/create",
+      bookData
+    );
+    const createdBook = await response.data[0];
+    return createdBook;
+  } catch (error) {
+    console.log(error);
+  }
+};
