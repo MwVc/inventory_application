@@ -1,15 +1,29 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BookForm from "../components/BookForm";
 import BookList from "../components/BookList";
+import axios from "axios";
 
 export default function Dashboard() {
+  // fetching data from server
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/api/books");
+        console.log(response);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
+  }, []);
+
   // define initial state ie list of books
   const [books, setBooks] = useState([
     {
       id: 1,
       title: "Atomic Habits",
       author: "James Clear",
-      category: "Self-help",
+      genre_id: "Self-help",
       quantity: 10,
     },
   ]);
