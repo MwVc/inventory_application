@@ -7,7 +7,7 @@ export default function BookForm({ addBook, updateBook, editingBook }) {
     title: "",
     author: "",
     genre_id: "",
-    quantity: "",
+    stock: "",
   });
 
   // when editingBook changes pre-fill the form
@@ -33,7 +33,7 @@ export default function BookForm({ addBook, updateBook, editingBook }) {
       !formData.title ||
       !formData.author ||
       !formData.genre_id ||
-      !formData.quantity
+      !formData.stock
     ) {
       alert("Please fill all fields");
       return;
@@ -48,7 +48,7 @@ export default function BookForm({ addBook, updateBook, editingBook }) {
     }
 
     // clear form input after submission
-    setFormData({ title: "", author: "", genre_id: "", quantity: "" });
+    setFormData({ title: "", author: "", genre_id: "", stock: "" });
   };
 
   return (
@@ -93,9 +93,9 @@ export default function BookForm({ addBook, updateBook, editingBook }) {
       <input
         type="number"
         min={0}
-        name="quantity"
-        placeholder="Quantity"
-        value={formData.quantity}
+        name="stock"
+        placeholder="Stock"
+        value={formData.stock}
         onChange={handleChange}
         className="w-full border rounded-lg p-2"
       />
