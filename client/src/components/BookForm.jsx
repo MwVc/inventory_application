@@ -6,7 +6,7 @@ export default function BookForm({ addBook, updateBook, editingBook }) {
     id: null,
     title: "",
     author: "",
-    category: "",
+    genre_id: "",
     quantity: "",
   });
 
@@ -20,19 +20,19 @@ export default function BookForm({ addBook, updateBook, editingBook }) {
   // handle input changes
   const handleChange = (event) => {
     const { name, value } = event.target; // name = input field name, value = current value
-    console.log(value);
     setFormData({ ...formData, [name]: value });
   };
 
   // handle form submission
   const handleSubmit = (event) => {
+    console.log(formData);
     event.preventDefault();
 
     // validate: make sure all fields are filled
     if (
       !formData.title ||
       !formData.author ||
-      !formData.category ||
+      !formData.genre_id ||
       !formData.quantity
     ) {
       alert("Please fill all fields");
@@ -48,7 +48,7 @@ export default function BookForm({ addBook, updateBook, editingBook }) {
     }
 
     // clear form input after submission
-    setFormData({ title: "", author: "", category: "", quantity: "" });
+    setFormData({ title: "", author: "", genre_id: "", quantity: "" });
   };
 
   return (
@@ -75,14 +75,20 @@ export default function BookForm({ addBook, updateBook, editingBook }) {
         className="w-full border rounded-lg p-2"
       />
 
-      <input
-        type="text"
-        name="category"
-        placeholder="Category"
-        value={formData.category}
+      <select
+        name="genre_id"
+        id="genre_id"
+        value={formData.genre_id}
         onChange={handleChange}
         className="w-full border rounded-lg p-2"
-      />
+      >
+        <option value="">Choose A Genre</option>
+        <option value="1">Non-Fiction</option>
+        <option value="2">Science</option>
+        <option value="3">Fiction</option>
+        <option value="4">History</option>
+        <option value="5">Technology</option>
+      </select>
 
       <input
         type="number"
