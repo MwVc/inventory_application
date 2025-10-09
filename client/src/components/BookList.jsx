@@ -1,5 +1,4 @@
 export default function BookList({ books, deleteBook, startEditing }) {
-  console.log(books);
   return (
     <div className="container">
       <h2 className="text-xl font-semibold mb-2">Book Inventory</h2>
@@ -13,7 +12,7 @@ export default function BookList({ books, deleteBook, startEditing }) {
             <tr className="bg-gray-200 text-left">
               <th className="p-2 border">Title</th>
               <th className="p-2 border">Author</th>
-              <th className="p-2 border">Category</th>
+              <th className="p-2 border">Genre</th>
               <th className="p-2 border text-center">Quantity</th>
               <th className="p-2 border text-center">Actions</th>
             </tr>
@@ -24,7 +23,7 @@ export default function BookList({ books, deleteBook, startEditing }) {
                 <tr className="hover:bg-gray-50" key={book.id}>
                   <td className="p-2 border">{book.title}</td>
                   <td className="p-2 border">{book.author}</td>
-                  <td className="p-2 border">{book.category}</td>
+                  <td className="p-2 border">{book.genre_id}</td>
                   <td className="p-2 border text-center">{book.quantity}</td>
                   <td className="p-2 border text-center space-x-2">
                     <button
