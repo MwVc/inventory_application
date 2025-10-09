@@ -1,32 +1,22 @@
 import { useEffect, useState } from "react";
 import BookForm from "../components/BookForm";
 import BookList from "../components/BookList";
-import axios from "axios";
+import { fetchAllBooks } from "../api/booksApi";
 
 export default function Dashboard() {
-  // fetching data from server
+  // define initial state ie list of books
+  const [books, setBooks] = useState([]);
+
+  // fetching data
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("http://localhost:5000/api/books");
-        console.log(response);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchData();
+    (async () => {
+      const books = await fetchAllBooks();
+      setBooks(books);
+    })();
   }, []);
 
-  // define initial state ie list of books
-  const [books, setBooks] = useState([
-    {
-      id: 1,
-      title: "Atomic Habits",
-      author: "James Clear",
-      genre_id: "Self-help",
-      quantity: 10,
-    },
-  ]);
+  // checking books state
+  console.log(books);
 
   // track which book is currently being edited
   const [editingBook, setEditingBook] = useState(null);
