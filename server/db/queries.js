@@ -1,7 +1,9 @@
 const pool = require("./pool");
 
 async function dbGetBooks() {
-  const { rows } = await pool.query("SELECT * FROM books");
+  const { rows } = await pool.query(
+    "SELECT books.id, books.title, books.stock, books.author, genres.name AS genre FROM books INNER JOIN genres ON books.genre_id = genres.id"
+  );
   if (rows.length === 0) {
     const error = new Error("Books not found");
     error.statusCode = 404;
