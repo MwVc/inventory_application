@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import BookForm from "../components/BookForm";
 import BookList from "../components/BookList";
 import { fetchAllBooks } from "../api/booksApi";
+import { createBook } from "../api/booksApi";
 
 export default function Dashboard() {
   // define initial state ie list of books
@@ -35,8 +36,14 @@ export default function Dashboard() {
   };
 
   // add a placeholder function (to be implemented later)
-  const addBook = (newBook) => {
-    setBooks([...books, { ...newBook, id: Date.now() }]);
+  const addBook = async (newBook) => {
+    try {
+      const newCreatedBook = await createBook(newBook);
+      setBooks([...books, newCreatedBook]);
+    } catch (error) {
+      console.log("Failed to add Book:", error);
+    }
+    // setBooks([...books, newBook]);
   };
 
   const deleteBook = (id) => {
