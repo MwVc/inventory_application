@@ -13,7 +13,7 @@ export default function BookList({ books, deleteBook, startEditing }) {
               <th className="p-2 border">Title</th>
               <th className="p-2 border">Author</th>
               <th className="p-2 border">Genre</th>
-              <th className="p-2 border text-center">Quantity</th>
+              <th className="p-2 border text-center">Stock</th>
               <th className="p-2 border text-center">Actions</th>
             </tr>
           </thead>
@@ -23,8 +23,8 @@ export default function BookList({ books, deleteBook, startEditing }) {
                 <tr className="hover:bg-gray-50" key={book.id}>
                   <td className="p-2 border">{book.title}</td>
                   <td className="p-2 border">{book.author}</td>
-                  <td className="p-2 border">{book.genre_id}</td>
-                  <td className="p-2 border text-center">{book.quantity}</td>
+                  <td className="p-2 border">{book.genre}</td>
+                  <td className="p-2 border text-center">{book.stock}</td>
                   <td className="p-2 border text-center space-x-2">
                     <button
                       className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600"
