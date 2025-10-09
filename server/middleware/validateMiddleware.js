@@ -1,4 +1,4 @@
-const { body, validationResult } = require("express-validator");
+const { body } = require("express-validator");
 
 const validateBook = [
   body("title")
@@ -20,7 +20,7 @@ const validateBook = [
     .notEmpty()
     .withMessage("Author is required")
     .isLength({ min: 2 })
-    .withMessage("Author name must be at least  characters long")
+    .withMessage("Author name must be at least 2 characters long")
     .matches(/^[A-Za-z\s]+$/)
     .withMessage("Author must contain only letters"),
 ];
