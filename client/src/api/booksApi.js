@@ -6,7 +6,11 @@ export const fetchAllBooks = async () => {
     const books = await response.data;
     return books;
   } catch (error) {
+    // for debugging
     console.log(error);
+
+    // re-throw error with a descriptive message
+    throw new Error("Unable to fetch books. Check your server connection");
   }
 };
 
@@ -33,4 +37,3 @@ export const fetchBookById = async (bookId) => {
     console.log(error);
   }
 };
-fetchBookById(3);
