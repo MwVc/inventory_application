@@ -22,3 +22,15 @@ export const createBook = async (bookData) => {
     console.log(error);
   }
 };
+
+export const fetchBookById = async (bookId) => {
+  try {
+    const response = await axios.get(
+      `http://localhost:5000/api/books/${bookId}`
+    );
+    console.log(response.data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+fetchBookById(3);
