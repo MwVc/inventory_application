@@ -15,7 +15,7 @@ async function dbGetBooks() {
 
 async function dbGetBookById(bookId) {
   const { rows } = await pool.query(
-    "SELECT books.*, genres.name AS genre_name FROM books INNER JOIN genres ON books.genre_id = genres.id WHERE books.id = ($1);",
+    "SELECT books.*, genres.name AS genre FROM books INNER JOIN genres ON books.genre_id = genres.id WHERE books.id = ($1);",
     [bookId]
   );
   if (rows.length === 0) {
