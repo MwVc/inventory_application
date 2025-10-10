@@ -11,13 +11,18 @@ export default function Dashboard() {
   // fetching data
   useEffect(() => {
     (async () => {
-      const books = await fetchAllBooks();
-      setBooks(books);
+      try {
+        const books = await fetchAllBooks();
+        setBooks(books);
+      } catch (error) {
+        console.log(error.message);
+        setBooks([]);
+      }
     })();
   }, []);
 
-  // checking books state
-  console.log(books);
+  // // checking books state
+  // console.log(books);
 
   // track which book is currently being edited
   const [editingBook, setEditingBook] = useState(null);
