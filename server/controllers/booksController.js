@@ -36,16 +36,25 @@ const createBook = async (req, res, next) => {
 
   if (result.isEmpty()) {
     try {
-      const book = await dbAddBook(bookData);
-      res.status(200).json(book);
+      const newBook = await dbAddBook(bookData);
+      res.status(200).json({
+        success: true,
+        message: "Book added successfully",
+        data: newBook,
+      });
       return;
     } catch (error) {
       next(error);
+      console.log(error.message);
       return;
     }
   }
 
-  return res.status(400).json({ errors: result.array() });
+  return res.status(400).json({
+    success: false,
+    message: "validation error",
+    errors: result.array(),
+  });
 };
 
 const updateBook = async (req, res, next) => {
