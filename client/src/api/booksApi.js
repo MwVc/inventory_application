@@ -1,30 +1,17 @@
 import axios from "axios";
 
 export const fetchAllBooks = async () => {
-  try {
-    const response = await axios.get("http://localhost:5000/api/books");
-    const books = await response.data;
-    return books;
-  } catch (error) {
-    // for debugging
-    console.log(error);
-
-    // re-throw error with a descriptive message
-    throw new Error("Unable to fetch books. Check your server connection");
-  }
+  const response = await axios.get("http://localhost:5000/api/books");
+  return response.data;
 };
 
 export const createBook = async (bookData) => {
-  try {
-    const response = await axios.post(
-      "http://localhost:5000/api/books/create",
-      bookData
-    );
-    const createdBook = await response.data[0];
-    return createdBook;
-  } catch (error) {
-    console.log(error);
-  }
+  const response = await axios.post(
+    "http://localhost:5000/api/books/create",
+    bookData
+  );
+  console.log(response);
+  return response;
 };
 
 export const fetchBookById = async (bookId) => {
@@ -35,5 +22,7 @@ export const fetchBookById = async (bookId) => {
     console.log(response.data);
   } catch (error) {
     console.log(error);
+
+    throw new Error("Unable to fetch book. Check your server connection.");
   }
 };
