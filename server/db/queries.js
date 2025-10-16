@@ -29,7 +29,7 @@ async function dbGetBookById(bookId) {
 
 async function dbAddBook({ title, stock, author, genre_id }) {
   const { rows } = await pool.query(
-    "WITH inserted AS (INSERT INTO books (title, stock, author, genre_id) VALUES ($1, $2, $3, $4) RETURNING *) SELECT i.id, i.title, i.stock, i.author, g.name AS genre FROM insered i JOIN genres g ON g.id = i.genre_id;",
+    "WITH inserted AS (INSERT INTO books (title, stock, author, genre_id) VALUES ($1, $2, $3, $4) RETURNING *) SELECT i.id, i.title, i.stock, i.author, g.name AS genre FROM inserted i JOIN genres g ON g.id = i.genre_id;",
     [title, stock, author, genre_id]
   );
 
