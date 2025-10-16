@@ -8,14 +8,15 @@ export default function Dashboard() {
   // define initial state ie list of books
   const [books, setBooks] = useState([]);
 
-  // fetching data
+  // fetch data
   useEffect(() => {
     (async () => {
       try {
-        const books = await fetchAllBooks();
-        setBooks(books);
+        const fetchedBooks = await fetchAllBooks();
+
+        setBooks(fetchedBooks);
       } catch (error) {
-        console.log(error.message);
+        console.log("Failed to fetch books: ", error.message);
         setBooks([]);
       }
     })();
@@ -40,15 +41,37 @@ export default function Dashboard() {
     setEditingBook(null);
   };
 
-  // add a placeholder function (to be implemented later)
+  // add book to server
   const addBook = async (newBook) => {
     try {
-      const newCreatedBook = await createBook(newBook);
-      setBooks([...books, newCreatedBook]);
+      const response = await createBook(newBook);
+      // expect new book from server
+      const book = await response.data.data;
+      // add new book to state
+      setBooks((prevBooks) => [...prevBooks, book]);
     } catch (error) {
-      console.log("Failed to add Book:", error);
+      console.log(error);
+      // the backend sent a known response
+      if (error.response) {
+        const { status, data } = error.response;
+
+        // handle validation errors
+        if (status === 400 && data.errors) {
+          console.log("Validation errors:", data.errors);
+
+          // display to the user in the form
+        } else {
+          // handle other errors
+          console.log(`Server error ${status}:`, data.message);
+        }
+      }
+      // handle if server doesn't respond
+      else if (error.request) {
+        console.log("No response from server:", error.message);
+      } else {
+        console.log("Error sending request:", error.message);
+      }
     }
-    // setBooks([...books, newBook]);
   };
 
   const deleteBook = (id) => {
