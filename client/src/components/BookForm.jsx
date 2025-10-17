@@ -25,8 +25,8 @@ export default function BookForm({ addBook, updateBook, editingBook }) {
 
   // handle form submission
   const handleSubmit = (event) => {
-    console.log(formData);
     event.preventDefault();
+    console.log(formData);
 
     // validate: make sure all fields are filled
     if (

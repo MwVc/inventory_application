@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
 import BookForm from "../components/BookForm";
 import BookList from "../components/BookList";
-import { fetchAllBooks } from "../api/booksApi";
+import { fetchAllBooks, updateBookById } from "../api/booksApi";
 import { createBook } from "../api/booksApi";
 
 export default function Dashboard() {
   // define initial state ie list of books
   const [books, setBooks] = useState([]);
+
+  // track which book is currently being edited
+  const [editingBook, setEditingBook] = useState(null);
 
   // fetch data
   useEffect(() => {
@@ -22,22 +25,34 @@ export default function Dashboard() {
     })();
   }, []);
 
-  // // checking books state
-  // console.log(books);
-
-  // track which book is currently being edited
-  const [editingBook, setEditingBook] = useState(null);
-
   // start editing book
   const startEditing = (book) => {
     setEditingBook(book);
   };
 
   // save the edited book
-  const updateBook = (updateBook) => {
-    setBooks(
-      books.map((book) => (book.id === updateBook.id ? updateBook : book))
-    );
+  const updateBook = async (bookFormData) => {
+    try {
+      const response = await updateBookById(bookFormData);
+      const updatedBook = await response.data.data;
+
+      // insert newly updated book to books state
+      setBooks(
+        books.map((book) => (book.id === updatedBook.id ? updatedBook : book))
+      );
+    } catch (error) {
+      console.log(error);
+      // the backend sent a known response
+      if (error.response) {
+        const { status, data } = error.response;
+        console.log(status, data, error);
+      }
+    }
+
+    // setBooks(
+    //   books.map((book) => (book.id === updateBook.id ? updateBook : book))
+    // );
+
     setEditingBook(null);
   };
 
