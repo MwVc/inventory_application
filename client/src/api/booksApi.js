@@ -26,3 +26,11 @@ export const fetchBookById = async (bookId) => {
     throw new Error("Unable to fetch book. Check your server connection.");
   }
 };
+
+export const updateBookById = async (bookData) => {
+  const response = await axios.patch(
+    `http://localhost:5000/api/books/${bookData.id}`,
+    bookData
+  );
+  return response;
+};
