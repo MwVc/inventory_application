@@ -34,42 +34,51 @@ const createBook = async (req, res, next) => {
   const result = validationResult(req);
   const bookData = matchedData(req);
 
-  if (result.isEmpty()) {
-    try {
-      const newBook = await dbAddBook(bookData);
-      res.status(200).json({
-        success: true,
-        message: "Book added successfully",
-        data: newBook,
+  try {
+    if (!result.isEmpty()) {
+      return res.status(400).json({
+        success: false,
+        message: "validation error",
+        errors: result.array(),
       });
-      return;
-    } catch (error) {
-      next(error);
-      console.log(error.message);
-      return;
     }
-  }
 
-  return res.status(400).json({
-    success: false,
-    message: "validation error",
-    errors: result.array(),
-  });
+    const newBook = await dbAddBook(bookData);
+    res.status(200).json({
+      success: true,
+      message: "Book added successfully",
+      data: newBook,
+    });
+    return;
+  } catch (error) {
+    next(error);
+    console.log(error.message);
+  }
 };
 
 const updateBook = async (req, res, next) => {
   const result = validationResult(req);
-  const bookData = { ...matchedData(req), book_id: req.params.id };
+  const bookData = { ...matchedData(req), id: req.params.id };
 
   try {
     if (result.isEmpty()) {
-      await dbUpdateBook(bookData);
-      res.status(200).json({ message: "Book updated successfully" });
+      const updatedBook = await dbUpdateBook(bookData);
+      res.status(200).json({
+        success: true,
+        message: "Book updated successfully",
+        data: updatedBook,
+      });
     }
   } catch (error) {
     next(error);
     return;
   }
+
+  return res.status(400).json({
+    success: fasle,
+    message: "validation error",
+    errors: result.array(),
+  });
 };
 
 const deleteBook = async (req, res, next) => {
