@@ -2,7 +2,7 @@ const pool = require("./pool");
 
 async function dbGetBooks() {
   const { rows } = await pool.query(
-    "SELECT books.id, books.title, books.stock, books.author, genres.name AS genre FROM books INNER JOIN genres ON books.genre_id = genres.id"
+    "SELECT books.*, genres.name AS genre FROM books INNER JOIN genres ON books.genre_id = genres.id"
   );
   if (rows.length === 0) {
     const error = new Error("Books not found");
@@ -42,18 +42,19 @@ async function dbAddBook({ title, stock, author, genre_id }) {
   return rows[0];
 }
 
-async function dbUpdateBook({ title, stock, author, genre_id, book_id }) {
-  const { rowCount } = await pool.query(
-    "UPDATE books SET title=$1, stock=$2, author=$3, genre_id=$4 WHERE id=$5;",
-    [title, stock, author, genre_id, book_id]
+async function dbUpdateBook({ title, stock, author, genre_id, id }) {
+  const { rows } = await pool.query(
+    "WITH updated AS (UPDATE books SET title=$1, stock=$2, author=$3, genre_id=$4 WHERE id=$5 RETURNING *) SELECT u.*, g.name AS genre FROM updated u JOIN genres g ON u.genre_id = g.id;",
+    [title, stock, author, genre_id, id]
   );
 
-  if (rowCount === 0) {
+  if (rows.length === 0) {
     const error = new Error("Error updating book");
     error.statusCode = 422;
     throw error;
   }
-  return;
+
+  return rows[0];
 }
 
 async function dbDeleteBook(id) {
