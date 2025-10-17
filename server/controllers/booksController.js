@@ -61,24 +61,24 @@ const updateBook = async (req, res, next) => {
   const bookData = { ...matchedData(req), id: req.params.id };
 
   try {
-    if (result.isEmpty()) {
-      const updatedBook = await dbUpdateBook(bookData);
-      res.status(200).json({
-        success: true,
-        message: "Book updated successfully",
-        data: updatedBook,
+    if (!result.isEmpty()) {
+      return res.status(400).json({
+        success: fasle,
+        message: "validation error",
+        errors: result.array(),
       });
     }
+
+    const updatedBook = await dbUpdateBook(bookData);
+    res.status(200).json({
+      success: true,
+      message: "Book updated successfully",
+      data: updatedBook,
+    });
   } catch (error) {
     next(error);
-    return;
+    consoele.log(error);
   }
-
-  return res.status(400).json({
-    success: fasle,
-    message: "validation error",
-    errors: result.array(),
-  });
 };
 
 const deleteBook = async (req, res, next) => {
