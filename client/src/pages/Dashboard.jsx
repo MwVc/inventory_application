@@ -11,6 +11,9 @@ export default function Dashboard() {
   // track which book is currently being edited
   const [editingBook, setEditingBook] = useState(null);
 
+  // book updateSuccess state
+  const [updateSuccess, setUpdateSuccess] = useState(false);
+
   // fetch data
   useEffect(() => {
     (async () => {
@@ -40,20 +43,30 @@ export default function Dashboard() {
       setBooks(
         books.map((book) => (book.id === updatedBook.id ? updatedBook : book))
       );
+
+      // clear editing book state
+      setEditingBook(null);
+
+      setUpdateSuccess(true);
     } catch (error) {
       console.log(error);
+      setUpdateSuccess(false);
       // the backend sent a known response
       if (error.response) {
         const { status, data } = error.response;
-        console.log(status, data, error);
+        console.log(status, data);
+
+        // handle validation errors
+        if (status === 400 && data.errors) {
+          console.log("validation errors", data.errors);
+
+          // display to user
+        }
+      } else {
+        // handle other errors
+        console.log("Error sending request:", error.message);
       }
     }
-
-    // setBooks(
-    //   books.map((book) => (book.id === updateBook.id ? updateBook : book))
-    // );
-
-    setEditingBook(null);
   };
 
   // add book to server
@@ -102,6 +115,7 @@ export default function Dashboard() {
             addBook={addBook}
             updateBook={updateBook}
             editingBook={editingBook}
+            updateSuccess={updateSuccess}
           />
         </div>
         <div className="bg-white p-4 rounded-xl shadow">
