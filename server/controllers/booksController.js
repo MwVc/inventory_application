@@ -63,7 +63,7 @@ const updateBook = async (req, res, next) => {
   try {
     if (!result.isEmpty()) {
       return res.status(400).json({
-        success: fasle,
+        success: false,
         message: "validation error",
         errors: result.array(),
       });
@@ -77,7 +77,7 @@ const updateBook = async (req, res, next) => {
     });
   } catch (error) {
     next(error);
-    consoele.log(error);
+    console.log(error);
   }
 };
 
