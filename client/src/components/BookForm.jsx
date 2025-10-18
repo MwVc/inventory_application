@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 
-export default function BookForm({ addBook, updateBook, editingBook }) {
+export default function BookForm({
+  addBook,
+  updateBook,
+  editingBook,
+  updateSuccess,
+}) {
   // local state for form inputs
   const [formData, setFormData] = useState({
     id: null,
@@ -16,6 +21,13 @@ export default function BookForm({ addBook, updateBook, editingBook }) {
       setFormData(editingBook);
     }
   }, [editingBook]);
+
+  // reset the form when book successfully updates
+  useEffect(() => {
+    if (updateSuccess) {
+      setFormData({ title: "", author: "", genre_id: "", stock: "" });
+    }
+  }, [updateSuccess]);
 
   // handle input changes
   const handleChange = (event) => {
@@ -39,16 +51,17 @@ export default function BookForm({ addBook, updateBook, editingBook }) {
       return;
     }
 
-    if (formData.id) {
-      // editing existing book
-      updateBook(formData);
-    } else {
+    if (!formData.id) {
       // add new book
       addBook(formData);
+
+      // clear form input after submission
+      setFormData({ title: "", author: "", genre_id: "", stock: "" });
+      return;
     }
 
-    // clear form input after submission
-    setFormData({ title: "", author: "", genre_id: "", stock: "" });
+    // editing existing book
+    updateBook(formData);
   };
 
   return (
