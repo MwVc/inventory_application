@@ -63,7 +63,7 @@ async function dbDeleteBook(id) {
   ]);
 
   if (rowCount === 0) {
-    const error = new Error("Cannot delete. Book not found");
+    const error = new Error("Error deleting book");
     error.statusCode = 404;
     throw error;
   }
