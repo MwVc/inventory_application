@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import BookForm from "../components/BookForm";
 import BookList from "../components/BookList";
-import { fetchAllBooks, updateBookById } from "../api/booksApi";
+import { deleteBookById, fetchAllBooks, updateBookById } from "../api/booksApi";
 import { createBook } from "../api/booksApi";
 
 export default function Dashboard() {
@@ -93,7 +93,7 @@ export default function Dashboard() {
           console.log(`Server error ${status}:`, data.message);
         }
       }
-      // handle if server doesn't respond
+      // request was made but no response was received
       else if (error.request) {
         console.log("No response from server:", error.message);
       } else {
@@ -102,8 +102,24 @@ export default function Dashboard() {
     }
   };
 
-  const deleteBook = (id) => {
-    setBooks(books.filter((book) => book.id !== id));
+  const deleteBook = async (id) => {
+    try {
+      const response = await deleteBookById(id);
+      console.log(response);
+      // setBooks(books.filter((book) => book.id !== id));
+    } catch (error) {
+      if (error.response) {
+        const { status, data } = error.response;
+        console.log(status, data);
+        console.log(error);
+      } else if (error.request) {
+        // request was made but no response received
+        console.log("Server did not respond:", error.request);
+      } else {
+        // something happened in setting up request that triggered error
+        console.log("Error setting up request: ", error.message);
+      }
+    }
   };
 
   return (
