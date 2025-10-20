@@ -82,9 +82,9 @@ const updateBook = async (req, res, next) => {
 };
 
 const deleteBook = async (req, res, next) => {
-  const { book_id } = req.params;
+  const { id } = req.params;
   try {
-    await dbDeleteBook(book_id);
+    await dbDeleteBook(id);
     res.status(200).json({ message: "Book deleted successfully" });
   } catch (error) {
     next(error);
