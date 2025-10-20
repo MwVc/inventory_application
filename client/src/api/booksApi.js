@@ -34,3 +34,10 @@ export const updateBookById = async (bookData) => {
   );
   return response;
 };
+
+export const deleteBookById = async (bookId) => {
+  const response = await axios.delete(
+    `http://localhost:5000/api/books/${bookId}`
+  );
+  return response;
+};
