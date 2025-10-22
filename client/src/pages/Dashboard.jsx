@@ -4,6 +4,7 @@ import BookList from "../components/BookList";
 import { deleteBookById, fetchAllBooks, updateBookById } from "../api/booksApi";
 import { createBook } from "../api/booksApi";
 import PopUp from "../components/PopUp";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function Dashboard() {
   // define initial state ie list of books
@@ -114,20 +115,21 @@ export default function Dashboard() {
   };
 
   const deleteBook = async () => {
+    setPassword(""); // clear password state
     try {
       const response = await deleteBookById(bookToDeleteId, password);
-
-      // setBooks(books.filter((book) => book.id !== id));
+      console.log(response);
+      toast.success("Book deleted successfully");
+      // delete book in state and rerender
+      setBooks(books.filter((book) => book.id !== bookToDeleteId));
     } catch (error) {
-      if (error.response) {
-        const { status, data } = error.response;
-        console.log(status, data);
-      } else if (error.request) {
-        // request was made but no response received
-        console.log("Server did not respond:", error.request);
+      console.log(error);
+      if (error.status === 401) {
+        toast.error("Wrong password");
+      } else if (error.status === 404) {
+        alert("Book not found");
       } else {
-        // something happened in setting up request that triggered error
-        console.log("Error setting up request: ", error.message);
+        alert("Something went wrong:", error.message);
       }
     }
   };
@@ -163,6 +165,7 @@ export default function Dashboard() {
         }}
         deleteBook={deleteBook}
       ></PopUp>
+      <Toaster />
     </div>
   );
 }
