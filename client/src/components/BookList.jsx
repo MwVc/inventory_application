@@ -1,4 +1,4 @@
-export default function BookList({ books, deleteBook, startEditing }) {
+export default function BookList({ books, handleDeleteClick, startEditing }) {
   return (
     <div className="container">
       <h2 className="text-xl font-semibold mb-2">Book Inventory</h2>
@@ -34,7 +34,7 @@ export default function BookList({ books, deleteBook, startEditing }) {
                     </button>
                     <button
                       className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-                      onClick={() => deleteBook(book.id)}
+                      onClick={() => handleDeleteClick(book.id)}
                     >
                       Delete
                     </button>
