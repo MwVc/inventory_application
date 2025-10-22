@@ -35,9 +35,11 @@ export const updateBookById = async (bookData) => {
   return response;
 };
 
-export const deleteBookById = async (bookId) => {
+export const deleteBookById = async (bookId, password) => {
+  console.log(bookId, password);
   const response = await axios.delete(
-    `http://localhost:5000/api/books/${bookId}`
+    `http://localhost:5000/api/books/${bookId}`,
+    { data: { password: password } }
   );
   return response;
 };
