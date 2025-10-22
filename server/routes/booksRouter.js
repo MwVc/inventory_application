@@ -7,12 +7,13 @@ const {
   updateBook,
 } = require("../controllers/booksController");
 const { validateBook } = require("../middleware/validateMiddleware");
+const passwordMiddleware = require("../middleware/passwordMiddleware");
 const router = express.Router();
 
 router.get("/books", getAllBooks);
 router.get("/books/:id", getBookById);
 router.post("/books/create", [validateBook, createBook]);
 router.patch("/books/:id", [validateBook, updateBook]);
-router.delete("/books/:id", deleteBook);
+router.delete("/books/:id", [passwordMiddleware, deleteBook]);
 
 module.exports = router;
