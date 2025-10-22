@@ -26,6 +26,7 @@ const PopUp = ({ isOpen, onClose, password, onPasswordChange, deleteBook }) => {
           placeholder="Enter password"
           value={password}
           onChange={onPasswordChange}
+          autoFocus
           className="w-full border border-gray-300 rounded-md px-3 py-2 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         <div className="flex justify-end space-x-2">
@@ -37,7 +38,11 @@ const PopUp = ({ isOpen, onClose, password, onPasswordChange, deleteBook }) => {
           </button>
           <button
             className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-            onClick={deleteBook}
+            onClick={() => {
+              deleteBook();
+              onClose();
+              () => console.log("confirm button clicked");
+            }}
           >
             Confirm
           </button>
