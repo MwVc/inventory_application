@@ -3,16 +3,21 @@ import BookForm from "../components/BookForm";
 import BookList from "../components/BookList";
 import { deleteBookById, fetchAllBooks, updateBookById } from "../api/booksApi";
 import { createBook } from "../api/booksApi";
+import PopUp from "../components/PopUp";
 
 export default function Dashboard() {
   // define initial state ie list of books
   const [books, setBooks] = useState([]);
-
   // track which book is currently being edited
   const [editingBook, setEditingBook] = useState(null);
-
   // book updateSuccess state
   const [updateSuccess, setUpdateSuccess] = useState(false);
+  // popup state
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  // password for deletion of book
+  const [password, setPassword] = useState("");
+  // book to be deleted stored in state
+  const [bookToDeleteId, setBookToDeleteId] = useState(null);
 
   // fetch data
   useEffect(() => {
@@ -102,16 +107,21 @@ export default function Dashboard() {
     }
   };
 
-  const deleteBook = async (id) => {
+  // function to handle delete click
+  const handleDeleteClick = (bookId) => {
+    setBookToDeleteId(bookId);
+    setIsPopupOpen(true);
+  };
+
+  const deleteBook = async () => {
     try {
-      const response = await deleteBookById(id);
-      console.log(response);
+      const response = await deleteBookById(bookToDeleteId, password);
+
       // setBooks(books.filter((book) => book.id !== id));
     } catch (error) {
       if (error.response) {
         const { status, data } = error.response;
         console.log(status, data);
-        console.log(error);
       } else if (error.request) {
         // request was made but no response received
         console.log("Server did not respond:", error.request);
@@ -137,11 +147,22 @@ export default function Dashboard() {
         <div className="bg-white p-4 rounded-xl shadow">
           <BookList
             books={books}
-            deleteBook={deleteBook}
+            handleDeleteClick={handleDeleteClick}
             startEditing={startEditing}
           />
         </div>
       </div>
+
+      {/* popup */}
+      <PopUp
+        isOpen={isPopupOpen}
+        onClose={() => setIsPopupOpen(false)}
+        password={password}
+        onPasswordChange={(event) => {
+          setPassword(event.target.value);
+        }}
+        deleteBook={deleteBook}
+      ></PopUp>
     </div>
   );
 }
