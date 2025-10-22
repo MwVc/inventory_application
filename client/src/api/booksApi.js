@@ -1,4 +1,5 @@
 import axios from "axios";
+import apiClient from "./apiClient";
 
 export const fetchAllBooks = async () => {
   const response = await axios.get("http://localhost:5000/api/books");
@@ -28,18 +29,13 @@ export const fetchBookById = async (bookId) => {
 };
 
 export const updateBookById = async (bookData) => {
-  const response = await axios.patch(
+  return apiClient.patch(
     `http://localhost:5000/api/books/${bookData.id}`,
     bookData
   );
-  return response;
 };
 
 export const deleteBookById = async (bookId, password) => {
   console.log(bookId, password);
-  const response = await axios.delete(
-    `http://localhost:5000/api/books/${bookId}`,
-    { data: { password: password } }
-  );
-  return response;
+  return apiClient.delete(`/books/${bookId}`, { data: { password: password } });
 };
