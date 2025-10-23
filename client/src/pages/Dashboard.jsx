@@ -28,7 +28,7 @@ export default function Dashboard() {
 
         setBooks(fetchedBooks);
       } catch (error) {
-        console.log("Failed to fetch books: ", error.message);
+        toast.error(`Failed to fetch books: ${error.message}`);
         setBooks([]);
       }
     })();
@@ -55,7 +55,6 @@ export default function Dashboard() {
 
       setUpdateSuccess(true);
     } catch (error) {
-      console.log(error);
       setUpdateSuccess(false);
 
       if (error.status !== 400) {
@@ -80,12 +79,13 @@ export default function Dashboard() {
     } catch (error) {
       console.log(error);
       // handle validation error
-      if (error.status === 400) {
-        console.log(error.data.errors[0].msg);
-        toast.error(`Error validating data: ${error.data.errors[0].msg}`);
-      } else {
+      if (error.status !== 400) {
         toast.error(error.message);
+        return;
       }
+      error.data.errors.forEach((error) =>
+        toast.error(`Validation error: ${error.msg}`)
+      );
     }
   };
 
@@ -104,7 +104,6 @@ export default function Dashboard() {
       // delete book in state and rerender
       setBooks(books.filter((book) => book.id !== bookToDeleteId));
     } catch (error) {
-      console.log(error);
       if (error.status === 401) {
         toast.error("Wrong password");
       } else if (error.status === 404) {
