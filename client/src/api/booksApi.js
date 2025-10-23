@@ -7,12 +7,10 @@ export const fetchAllBooks = async () => {
 };
 
 export const createBook = async (bookData) => {
-  const response = await axios.post(
+  return await apiClient.post(
     "http://localhost:5000/api/books/create",
     bookData
   );
-  console.log(response);
-  return response;
 };
 
 export const fetchBookById = async (bookId) => {
