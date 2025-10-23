@@ -14,16 +14,7 @@ export const createBook = async (bookData) => {
 };
 
 export const fetchBookById = async (bookId) => {
-  try {
-    const response = await axios.get(
-      `http://localhost:5000/api/books/${bookId}`
-    );
-    console.log(response.data);
-  } catch (error) {
-    console.log(error);
-
-    throw new Error("Unable to fetch book. Check your server connection.");
-  }
+  return await apiClient.get(`http://localhost:5000/api/books/${bookId}`);
 };
 
 export const updateBookById = async (bookData) => {
