@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 export default function BookForm({
   addBook,
@@ -38,7 +39,6 @@ export default function BookForm({
   // handle form submission
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(formData);
 
     // validate: make sure all fields are filled
     if (
@@ -47,7 +47,7 @@ export default function BookForm({
       !formData.genre_id ||
       !formData.stock
     ) {
-      alert("Please fill all fields");
+      toast.error("Please fill all fields");
       return;
     }
 
