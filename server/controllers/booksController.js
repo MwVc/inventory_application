@@ -11,7 +11,11 @@ const {
 const getAllBooks = async (req, res, next) => {
   try {
     const books = await dbGetBooks();
-    res.status(200).json(books);
+    res.status(200).json({
+      success: true,
+      message: "Books fetched successfully",
+      data: books,
+    });
   } catch (error) {
     next(error);
     return;
@@ -23,7 +27,11 @@ const getBookById = async (req, res, next) => {
 
   try {
     const book = await dbGetBookById(bookId);
-    res.status(200).json({ book });
+    res.status(200).json({
+      success: false,
+      message: "Book fetched successfully",
+      data: book,
+    });
   } catch (error) {
     next(error);
     return;
