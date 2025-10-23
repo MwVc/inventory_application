@@ -14,7 +14,10 @@ apiClient.interceptors.response.use(
     // normalize the error
     const err = {
       status: error.response?.status || 500,
-      message: error.response?.data?.message || "Something went wrong",
+      message:
+        error.response?.data?.message ||
+        error.message ||
+        "Something went wrong",
       data: error.response?.data || null,
     };
 
