@@ -24,9 +24,9 @@ export default function Dashboard() {
   useEffect(() => {
     (async () => {
       try {
-        const fetchedBooks = await fetchAllBooks();
+        const { data } = await fetchAllBooks();
 
-        setBooks(fetchedBooks);
+        setBooks(data);
       } catch (error) {
         toast.error(`Failed to fetch books: ${error.message}`);
         setBooks([]);
