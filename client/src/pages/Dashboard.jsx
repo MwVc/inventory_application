@@ -78,11 +78,13 @@ export default function Dashboard() {
       toast.success("Book created succesfully");
     } catch (error) {
       console.log(error);
-      // handle validation error
+
       if (error.status !== 400) {
         toast.error(error.message);
         return;
       }
+
+      // handle validation error
       error.data.errors.forEach((error) =>
         toast.error(`Validation error: ${error.msg}`)
       );
@@ -109,7 +111,7 @@ export default function Dashboard() {
       } else if (error.status === 404) {
         toast.error("Book not found");
       } else {
-        toast.error("Something went wrong:", error.message);
+        toast.error(error.message);
       }
     }
   };
