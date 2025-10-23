@@ -57,21 +57,13 @@ export default function Dashboard() {
     } catch (error) {
       console.log(error);
       setUpdateSuccess(false);
-      // the backend sent a known response
-      if (error.response) {
-        const { status, data } = error.response;
-        console.log(status, data);
 
-        // handle validation errors
-        if (status === 400 && data.errors) {
-          console.log("validation errors", data.errors);
-
-          // display to user
-        }
-      } else {
-        // handle other errors
-        console.log("Error sending request:", error.message);
+      if (error.status !== 400) {
+        toast.error(`Something went wrong: ${error.message}`);
+        return;
       }
+
+      error.data.errors.forEach((error) => toast.error(error.msg));
     }
   };
 
@@ -83,27 +75,16 @@ export default function Dashboard() {
       const book = await response.data.data;
       // add new book to state
       setBooks((prevBooks) => [...prevBooks, book]);
+      // notify the user
+      toast.success("Book created succesfully");
     } catch (error) {
       console.log(error);
-      // the backend sent a known response
-      if (error.response) {
-        const { status, data } = error.response;
-
-        // handle validation errors
-        if (status === 400 && data.errors) {
-          console.log("Validation errors:", data.errors);
-
-          // display to the user in the form
-        } else {
-          // handle other errors
-          console.log(`Server error ${status}:`, data.message);
-        }
-      }
-      // request was made but no response was received
-      else if (error.request) {
-        console.log("No response from server:", error.message);
+      // handle validation error
+      if (error.status === 400) {
+        console.log(error.data.errors[0].msg);
+        toast.error(`Error validating data: ${error.data.errors[0].msg}`);
       } else {
-        console.log("Error sending request:", error.message);
+        toast.error(error.message);
       }
     }
   };
@@ -127,9 +108,9 @@ export default function Dashboard() {
       if (error.status === 401) {
         toast.error("Wrong password");
       } else if (error.status === 404) {
-        alert("Book not found");
+        toast.error("Book not found");
       } else {
-        alert("Something went wrong:", error.message);
+        toast.error("Something went wrong:", error.message);
       }
     }
   };
