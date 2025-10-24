@@ -5,6 +5,7 @@ import { deleteBookById, fetchAllBooks, updateBookById } from "../api/booksApi";
 import { createBook } from "../api/booksApi";
 import PopUp from "../components/PopUp";
 import toast, { Toaster } from "react-hot-toast";
+import GenreList from "../components/GenreList";
 
 export default function Dashboard() {
   // define initial state ie list of books
@@ -19,8 +20,10 @@ export default function Dashboard() {
   const [password, setPassword] = useState("");
   // book to be deleted stored in state
   const [bookToDeleteId, setBookToDeleteId] = useState(null);
+  // active tab state
+  const [activeTab, setActiveTab] = useState("books");
 
-  // fetch data
+  // fetch books
   useEffect(() => {
     (async () => {
       try {
@@ -33,6 +36,8 @@ export default function Dashboard() {
       }
     })();
   }, []);
+
+  // fetch genres
 
   // start editing book
   const startEditing = (book) => {
@@ -117,9 +122,9 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
+    <div className="h-screen bg-gray-100 p-6 flex flex-col">
       <h1 className="text-3xl font-bold mb-6 text-center">Book_Inventory</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 flex-1 overflow-hidden">
         <div className="bg-white p-4 rounded-xl shadow">
           <BookForm
             addBook={addBook}
@@ -128,12 +133,34 @@ export default function Dashboard() {
             updateSuccess={updateSuccess}
           />
         </div>
-        <div className="bg-white p-4 rounded-xl shadow">
-          <BookList
-            books={books}
-            handleDeleteClick={handleDeleteClick}
-            startEditing={startEditing}
-          />
+        <div className="bg-white p-4 rounded-xl shadow overflow-y-auto">
+          <div className="flex justify-center mb-6 space-x-4">
+            <button
+              onClick={() => setActiveTab("books")}
+              className={`px-4 py-2 rounded-lg font-semibold ${
+                activeTab === "books" ? "bg-blue-600 text-white" : "bg-gray-200"
+              } `}
+            >
+              Books
+            </button>
+            <button
+              onClick={() => setActiveTab("genres")}
+              className={`px-4 py-2 rounded-lg font-semibold ${
+                activeTab == "genres" ? "bg-blue-600 text-white" : "bg-gray-200"
+              }`}
+            >
+              Genres
+            </button>
+          </div>
+          {activeTab === "books" ? (
+            <BookList
+              books={books}
+              handleDeleteClick={handleDeleteClick}
+              startEditing={startEditing}
+            />
+          ) : (
+            <GenreList />
+          )}
         </div>
       </div>
 
