@@ -1,10 +1,4 @@
-import { useEffect } from "react";
-
 const GenreList = ({ genres }) => {
-  useEffect(() => {
-    console.log("Hello from genre list");
-  });
-
   return (
     <div className="container">
       <h2 className="text-xl font-semibold mb-2">Genres</h2>
