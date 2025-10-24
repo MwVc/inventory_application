@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import BookForm from "../components/BookForm";
 import BookList from "../components/BookList";
-import { deleteBookById, fetchAllBooks, updateBookById } from "../api/booksApi";
+import { deleteBookById, fetchBooks, updateBookById } from "../api/booksApi";
+import { fetchGenres } from "../api/genresApi";
 import { createBook } from "../api/booksApi";
 import PopUp from "../components/PopUp";
 import toast, { Toaster } from "react-hot-toast";
@@ -10,6 +11,8 @@ import GenreList from "../components/GenreList";
 export default function Dashboard() {
   // define initial state ie list of books
   const [books, setBooks] = useState([]);
+  // define state for genres
+  const [genres, setGenres] = useState([]);
   // track which book is currently being edited
   const [editingBook, setEditingBook] = useState(null);
   // book updateSuccess state
@@ -21,23 +24,30 @@ export default function Dashboard() {
   // book to be deleted stored in state
   const [bookToDeleteId, setBookToDeleteId] = useState(null);
   // active tab state
-  const [activeTab, setActiveTab] = useState("books");
+  const [activeTab, setActiveTab] = useState(false);
 
-  // fetch books
   useEffect(() => {
     (async () => {
       try {
-        const { data } = await fetchAllBooks();
-
-        setBooks(data);
+        const { data } = await fetchBooks();
+        setBooks(data.data);
       } catch (error) {
         toast.error(`Failed to fetch books: ${error.message}`);
         setBooks([]);
       }
     })();
-  }, []);
 
-  // fetch genres
+    // fetch genres
+    (async () => {
+      try {
+        const { data } = await fetchGenres();
+        setGenres(data.data);
+      } catch (error) {
+        toast.error(error.message);
+        setGenres([]);
+      }
+    })();
+  }, []);
 
   // start editing book
   const startEditing = (book) => {
@@ -136,30 +146,30 @@ export default function Dashboard() {
         <div className="bg-white p-4 rounded-xl shadow overflow-y-auto">
           <div className="flex justify-center mb-6 space-x-4">
             <button
-              onClick={() => setActiveTab("books")}
+              onClick={() => setActiveTab(true)}
               className={`px-4 py-2 rounded-lg font-semibold ${
-                activeTab === "books" ? "bg-blue-600 text-white" : "bg-gray-200"
+                activeTab ? "bg-blue-600 text-white" : "bg-gray-200"
               } `}
             >
               Books
             </button>
             <button
-              onClick={() => setActiveTab("genres")}
+              onClick={() => setActiveTab(false)}
               className={`px-4 py-2 rounded-lg font-semibold ${
-                activeTab == "genres" ? "bg-blue-600 text-white" : "bg-gray-200"
+                !activeTab ? "bg-blue-600 text-white" : "bg-gray-200"
               }`}
             >
               Genres
             </button>
           </div>
-          {activeTab === "books" ? (
+          {activeTab ? (
             <BookList
               books={books}
               handleDeleteClick={handleDeleteClick}
               startEditing={startEditing}
             />
           ) : (
-            <GenreList />
+            <GenreList genres={genres} />
           )}
         </div>
       </div>
