@@ -6,7 +6,7 @@ const {
   dbAddBook,
   dbDeleteBook,
   dbUpdateBook,
-} = require("../db/queries");
+} = require("../db/bookQueries");
 
 const getAllBooks = async (req, res, next) => {
   try {
@@ -60,7 +60,7 @@ const createBook = async (req, res, next) => {
     return;
   } catch (error) {
     next(error);
-    console.log(error.message);
+    return;
   }
 };
 
@@ -85,7 +85,7 @@ const updateBook = async (req, res, next) => {
     });
   } catch (error) {
     next(error);
-    console.log(error);
+    return;
   }
 };
 
