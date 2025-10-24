@@ -1,27 +1,19 @@
-import axios from "axios";
 import apiClient from "./apiClient";
 
-export const fetchAllBooks = async () => {
-  const response = await axios.get("http://localhost:5000/api/books");
-  return response.data;
+export const fetchBooks = async () => {
+  return await apiClient.get("/books");
 };
 
 export const createBook = async (bookData) => {
-  return await apiClient.post(
-    "http://localhost:5000/api/books/create",
-    bookData
-  );
+  return await apiClient.post("/books/create", bookData);
 };
 
 export const fetchBookById = async (bookId) => {
-  return await apiClient.get(`http://localhost:5000/api/books/${bookId}`);
+  return await apiClient.get(`/books/${bookId}`);
 };
 
 export const updateBookById = async (bookData) => {
-  return apiClient.patch(
-    `http://localhost:5000/api/books/${bookData.id}`,
-    bookData
-  );
+  return apiClient.patch(`/books/${bookData.id}`, bookData);
 };
 
 export const deleteBookById = async (bookId, password) => {
