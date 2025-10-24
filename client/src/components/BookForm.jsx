@@ -5,6 +5,7 @@ export default function BookForm({
   addBook,
   updateBook,
   editingBook,
+  setEditingBook,
   updateSuccess,
 }) {
   // local state for form inputs
@@ -29,6 +30,12 @@ export default function BookForm({
       setFormData({ title: "", author: "", genre_id: "", stock: "" });
     }
   }, [updateSuccess]);
+
+  // reset formstate
+  const resetFormState = () => {
+    setFormData({ title: "", author: "", genre_id: "", stock: "" });
+    setEditingBook(null);
+  };
 
   // handle input changes
   const handleChange = (event) => {
@@ -56,7 +63,7 @@ export default function BookForm({
       addBook(formData);
 
       // clear form input after submission
-      setFormData({ title: "", author: "", genre_id: "", stock: "" });
+      setFormData();
       return;
     }
 
@@ -113,12 +120,23 @@ export default function BookForm({
         className="w-full border rounded-lg p-2"
       />
 
-      <button
-        type="submit"
-        className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700"
-      >
-        {formData.id ? "Save changes" : "Add Book"}
-      </button>
+      <div className="flex  mb-6 space-x-4">
+        <button
+          type="submit"
+          className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700"
+        >
+          {formData.id ? "Save changes" : "Add Book"}
+        </button>
+        <button
+          type="button"
+          className="bg-gray-200 text-black py-2 px-4 rounded-lg hover:bg-gray-500"
+          onClick={() => {
+            resetFormState();
+          }}
+        >
+          Cancel
+        </button>
+      </div>
     </form>
   );
 }
