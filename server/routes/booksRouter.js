@@ -10,10 +10,10 @@ const { validateBook } = require("../middleware/validateMiddleware");
 const passwordMiddleware = require("../middleware/passwordMiddleware");
 const router = express.Router();
 
-router.get("/books", getAllBooks);
-router.get("/books/:id", getBookById);
-router.post("/books/create", [validateBook, createBook]);
-router.patch("/books/:id", [validateBook, updateBook]);
-router.delete("/books/:id", [passwordMiddleware, deleteBook]);
+router.get("/", getAllBooks);
+router.get("/:id", getBookById);
+router.post("/create", [validateBook, createBook]);
+router.patch("/:id", [validateBook, updateBook]);
+router.delete("/:id", [passwordMiddleware, deleteBook]);
 
 module.exports = router;
