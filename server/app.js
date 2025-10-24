@@ -7,6 +7,7 @@ const app = express();
 
 // import routes
 const booksRouter = require("./routes/booksRouter");
+const genresRouter = require("./routes/genresRouter");
 
 // import error handler
 const errorHandler = require("./middleware/errorMiddleware");
@@ -14,7 +15,8 @@ const errorHandler = require("./middleware/errorMiddleware");
 app.use(cors());
 app.use(express.json());
 
-app.use("/api", booksRouter);
+app.use("/api/books", booksRouter);
+app.use("/api/genres", genresRouter);
 app.use(errorHandler);
 
 app.listen(PORT, () => {
