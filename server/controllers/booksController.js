@@ -11,6 +11,7 @@ const {
 const getAllBooks = async (req, res, next) => {
   try {
     const books = await dbGetBooks();
+
     res.status(200).json({
       success: true,
       message: "Books fetched successfully",
