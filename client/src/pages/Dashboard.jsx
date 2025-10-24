@@ -140,6 +140,7 @@ export default function Dashboard() {
             addBook={addBook}
             updateBook={updateBook}
             editingBook={editingBook}
+            setEditingBook={setEditingBook}
             updateSuccess={updateSuccess}
           />
         </div>
