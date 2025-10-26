@@ -26,6 +26,9 @@ export default function Dashboard() {
   // active tab state
   const [activeTab, setActiveTab] = useState(false);
 
+  // genreHandler function for fetching genres
+
+  // fetch books on Dashboard render
   useEffect(() => {
     (async () => {
       try {
@@ -36,8 +39,10 @@ export default function Dashboard() {
         setBooks([]);
       }
     })();
+  }, []);
 
-    // fetch genres
+  // fetch genres on Dashboard render
+  useEffect(() => {
     (async () => {
       try {
         const { data } = await fetchGenres();
@@ -48,6 +53,8 @@ export default function Dashboard() {
       }
     })();
   }, []);
+
+  // console.log(genres);
 
   // start editing book
   const startEditing = (book) => {
@@ -91,6 +98,7 @@ export default function Dashboard() {
       setBooks((prevBooks) => [...prevBooks, book]);
       // notify the user
       toast.success("Book created succesfully");
+      // fetchGenres();
     } catch (error) {
       console.log(error);
 
@@ -106,7 +114,7 @@ export default function Dashboard() {
     }
   };
 
-  // function to handle delete click
+  // function to handle delete  click
   const handleDeleteClick = (bookId) => {
     setBookToDeleteId(bookId);
     setIsPopupOpen(true);
@@ -138,6 +146,7 @@ export default function Dashboard() {
         <div className="bg-white p-4 rounded-xl shadow">
           <BookForm
             addBook={addBook}
+            genres={genres}
             updateBook={updateBook}
             editingBook={editingBook}
             setEditingBook={setEditingBook}
