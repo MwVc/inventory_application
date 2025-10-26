@@ -7,6 +7,7 @@ export default function BookForm({
   editingBook,
   setEditingBook,
   updateSuccess,
+  genres,
 }) {
   // local state for form inputs
   const [formData, setFormData] = useState({
@@ -63,7 +64,7 @@ export default function BookForm({
       addBook(formData);
 
       // clear form input after submission
-      setFormData();
+      setFormData({ title: "", author: "", genre_id: "", stock: "" });
       return;
     }
 
@@ -103,11 +104,16 @@ export default function BookForm({
         className="w-full border rounded-lg p-2"
       >
         <option value="">Choose A Genre</option>
-        <option value="1">Non-Fiction</option>
+        {/* <option value="1">Non-Fiction</option>
         <option value="2">Science</option>
         <option value="3">Fiction</option>
         <option value="4">History</option>
-        <option value="5">Technology</option>
+        <option value="5">Technology</option> */}
+        {genres.map((genre) => (
+          <option value={`${genre.id}`} key={genre.id}>
+            {genre.name}
+          </option>
+        ))}
       </select>
 
       <input
