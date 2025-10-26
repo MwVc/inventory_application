@@ -13,4 +13,11 @@ const dbGetGenres = async () => {
   return rows;
 };
 
-module.exports = { dbGetGenres };
+const dbDeleteGenre = async (id) => {
+  const { rowCount } = await pool.query("DELETE * FROM genres WHERE id = $1;", [
+    id,
+  ]);
+  console.log(rowCount);
+};
+
+module.exports = { dbGetGenres, dbDeleteGenre };
