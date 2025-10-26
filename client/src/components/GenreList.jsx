@@ -18,12 +18,6 @@ const GenreList = ({ genres }) => {
                 <td className="p-2 border text-center">{genre.books}</td>
                 <td className="p-2 border text-center space-x-2">
                   <button
-                    className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600"
-                    onClick={() => console.log("Adding genre")}
-                  >
-                    Add
-                  </button>
-                  <button
                     className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
                     onClick={() => console.log("Deleting genre")}
                   >
