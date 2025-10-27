@@ -26,35 +26,33 @@ export default function Dashboard() {
   // active tab state
   const [activeTab, setActiveTab] = useState(false);
 
-  // genreHandler function for fetching genres
+  // function for getting books
+  const getBooks = async () => {
+    try {
+      const { data } = await fetchBooks();
+      setBooks(data.data);
+    } catch (error) {
+      toast.error(`Failed to fetch books: ${error.message}`);
+      setBooks([]);
+    }
+  };
 
-  // fetch books on Dashboard render
+  // function for getting genres
+  const getGenres = async () => {
+    try {
+      const { data } = await fetchGenres();
+      setGenres(data.data);
+    } catch (error) {
+      toast.error(error.message);
+      setGenres([]);
+    }
+  };
+
+  // fetch books and genres on Dashboard render
   useEffect(() => {
-    (async () => {
-      try {
-        const { data } = await fetchBooks();
-        setBooks(data.data);
-      } catch (error) {
-        toast.error(`Failed to fetch books: ${error.message}`);
-        setBooks([]);
-      }
-    })();
+    getBooks();
+    getGenres();
   }, []);
-
-  // fetch genres on Dashboard render
-  useEffect(() => {
-    (async () => {
-      try {
-        const { data } = await fetchGenres();
-        setGenres(data.data);
-      } catch (error) {
-        toast.error(error.message);
-        setGenres([]);
-      }
-    })();
-  }, []);
-
-  // console.log(genres);
 
   // start editing book
   const startEditing = (book) => {
@@ -98,7 +96,7 @@ export default function Dashboard() {
       setBooks((prevBooks) => [...prevBooks, book]);
       // notify the user
       toast.success("Book created succesfully");
-      // fetchGenres();
+      getGenres();
     } catch (error) {
       console.log(error);
 
