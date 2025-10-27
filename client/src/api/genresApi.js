@@ -7,3 +7,8 @@ export const fetchGenres = async () => {
 export const deleteGenre = async (id) => {
   return await apiClient.delete(`/genres/${id}`);
 };
+
+export const createGenre = async (name) => {
+  const response = await apiClient.post("/genres/create", { name: name });
+  console.log(response);
+};
