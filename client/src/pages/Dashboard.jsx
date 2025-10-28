@@ -177,7 +177,7 @@ export default function Dashboard() {
               startEditing={startEditing}
             />
           ) : (
-            <GenreList genres={genres} />
+            <GenreList genres={genres} getGenres={getGenres} />
           )}
         </div>
       </div>
