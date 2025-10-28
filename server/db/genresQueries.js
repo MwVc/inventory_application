@@ -30,7 +30,7 @@ const dbCreateGenre = async (name) => {
 };
 
 const dbDeleteGenre = async (id) => {
-  const { rowCount } = await pool.query("DELETE * FROM genres WHERE id = $1;", [
+  const { rowCount } = await pool.query("DELETE FROM genres WHERE id = $1;", [
     id,
   ]);
   console.log(rowCount);
