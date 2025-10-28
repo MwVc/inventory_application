@@ -11,7 +11,6 @@ apiClient.interceptors.response.use(
     return response; // pass the response
   },
   (error) => {
-    console.log(error);
     // normalize the error
     const err = {
       status: error.response?.status || 500,
