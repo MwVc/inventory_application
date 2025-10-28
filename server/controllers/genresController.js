@@ -39,10 +39,10 @@ const createGenre = async (req, res, next) => {
 };
 
 const deleteGenre = async (req, res) => {
+  const { id } = req.params;
   try {
-    const { id } = req.params.id;
-    const response = await dbDeleteGenre(id);
-    res.status(200).json({ success: true, data: response });
+    await dbDeleteGenre(id);
+    res.status(200).json({ success: true });
   } catch (error) {
     next(error);
   }
