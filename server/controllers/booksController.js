@@ -94,7 +94,9 @@ const deleteBook = async (req, res, next) => {
   const { id } = req.params;
   try {
     await dbDeleteBook(id);
-    res.status(200).json({ message: "Book deleted successfully" });
+    res
+      .status(200)
+      .json({ success: true, message: "Book deleted successfully" });
   } catch (error) {
     next(error);
     return;
