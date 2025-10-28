@@ -2,7 +2,7 @@ import { useState } from "react";
 import { createGenre } from "../api/genresApi";
 import toast from "react-hot-toast";
 
-const GenreList = ({ genres, getGenres }) => {
+const GenreList = ({ genres, getGenres, handleDeleteGenre }) => {
   const [genre, setGenre] = useState("");
 
   // set input value to state - controlled form
@@ -44,7 +44,7 @@ const GenreList = ({ genres, getGenres }) => {
                   <td className="p-2 border text-center space-x-2">
                     <button
                       className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-                      onClick={() => console.log("Deleting genre")}
+                      onClick={() => handleDeleteGenre(genre.id)}
                     >
                       Delete
                     </button>
