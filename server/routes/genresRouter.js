@@ -5,9 +5,12 @@ const router = express.Router();
 const {
   getAllGenres,
   deleteGenre,
+  createGenre,
 } = require("../controllers/genresController");
+const { validateGenre } = require("../middleware/validateMiddleware");
 
 router.get("/", getAllGenres);
-router.delete("/:id", deleteGenre);
+router.post("/create", [validateGenre, createGenre]);
+router.delete("/:id", [deleteGenre]);
 
 module.exports = router;
