@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import BookForm from "../components/BookForm";
 import BookList from "../components/BookList";
 import { deleteBookById, fetchBooks, updateBookById } from "../api/booksApi";
-import { fetchGenres } from "../api/genresApi";
+import { deleteGenreById, fetchGenres } from "../api/genresApi";
 import { createBook } from "../api/booksApi";
 import PopUp from "../components/PopUp";
 import toast, { Toaster } from "react-hot-toast";
@@ -13,6 +13,11 @@ export default function Dashboard() {
   const [books, setBooks] = useState([]);
   // define state for genres
   const [genres, setGenres] = useState([]);
+
+  //
+  //
+  //
+
   // track which book is currently being edited
   const [editingBook, setEditingBook] = useState(null);
   // book updateSuccess state
@@ -21,12 +26,28 @@ export default function Dashboard() {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   // password for deletion of book
   const [password, setPassword] = useState("");
+
+  //
+  //
+  //
+
   // book to be deleted stored in state
-  const [bookToDeleteId, setBookToDeleteId] = useState(null);
+  // const [bookToDeleteId, setBookToDeleteId] = useState(null);
+  // // genre to be deleted stored in state
+  // const [genreToDeleteId, setGenreToDeleteId] = useState(null);
+
+  const [itemToDelete, setItemToDelete] = useState({ id: null, item: null });
+
+  //
+  //
+  //
+
   // active tab state
   const [activeTab, setActiveTab] = useState(false);
 
-  // function for getting books
+  //
+  //
+  // function for getting books and setting state
   const getBooks = async () => {
     try {
       const { data } = await fetchBooks();
@@ -36,8 +57,7 @@ export default function Dashboard() {
       setBooks([]);
     }
   };
-
-  // function for getting genres
+  // function for getting genres and setting state
   const getGenres = async () => {
     try {
       const { data } = await fetchGenres();
@@ -48,12 +68,18 @@ export default function Dashboard() {
     }
   };
 
+  //
+  //
+  //
+
   // fetch books and genres on Dashboard render
   useEffect(() => {
     getBooks();
     getGenres();
   }, []);
 
+  //
+  //
   // start editing book
   const startEditing = (book) => {
     setEditingBook(book);
@@ -98,8 +124,6 @@ export default function Dashboard() {
       toast.success("Book created succesfully");
       getGenres();
     } catch (error) {
-      console.log(error);
-
       if (error.status !== 400) {
         toast.error(error.message);
         return;
@@ -114,18 +138,43 @@ export default function Dashboard() {
 
   // function to handle delete  click
   const handleDeleteClick = (bookId) => {
-    setBookToDeleteId(bookId);
+    setItemToDelete({ id: bookId, type: "book" });
     setIsPopupOpen(true);
   };
 
   const deleteBook = async () => {
     setPassword(""); // clear password state
     try {
-      const response = await deleteBookById(bookToDeleteId, password);
-      console.log(response);
+      await deleteBookById(itemToDelete.id, password);
       toast.success("Book deleted successfully");
       // delete book in state and rerender
-      setBooks(books.filter((book) => book.id !== bookToDeleteId));
+      setBooks(books.filter((book) => book.id !== itemToDelete.id));
+    } catch (error) {
+      if (error.status === 401) {
+        toast.error("Wrong password");
+      } else if (error.status === 404) {
+        toast.error("Book not found");
+      } else {
+        toast.error(error.message);
+      }
+    }
+  };
+
+  // logic for deleting genre
+  const handleDeleteGenre = (id) => {
+    setItemToDelete({ id: [id], type: "genre" });
+    setIsPopupOpen(true);
+  };
+
+  // function to delete genre
+  const deleteGenre = async () => {
+    try {
+      await deleteGenreById(itemToDelete.id, password);
+      toast.success("Genre deleted successfully");
+      //refetch genres to update genre list
+      getGenres();
+      // clear password state which clears password input upon successful deletion
+      setPassword("");
     } catch (error) {
       if (error.status === 401) {
         toast.error("Wrong password");
@@ -177,7 +226,11 @@ export default function Dashboard() {
               startEditing={startEditing}
             />
           ) : (
-            <GenreList genres={genres} getGenres={getGenres} />
+            <GenreList
+              genres={genres}
+              getGenres={getGenres}
+              handleDeleteGenre={handleDeleteGenre}
+            />
           )}
         </div>
       </div>
@@ -190,7 +243,9 @@ export default function Dashboard() {
         onPasswordChange={(event) => {
           setPassword(event.target.value);
         }}
+        itemToDelete={itemToDelete}
         deleteBook={deleteBook}
+        deleteGenre={deleteGenre}
       ></PopUp>
       <Toaster />
     </div>
