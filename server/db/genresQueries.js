@@ -14,7 +14,6 @@ const dbGetGenres = async () => {
 };
 
 const dbCreateGenre = async (name) => {
-  console.log(name);
   const { rowCount } = await pool.query(
     "INSERT INTO genres (name) VALUES ($1);",
     [name]
@@ -33,7 +32,13 @@ const dbDeleteGenre = async (id) => {
   const { rowCount } = await pool.query("DELETE FROM genres WHERE id = $1;", [
     id,
   ]);
-  console.log(rowCount);
+
+  if (rowCount === 0) {
+    const error = new Error("Error deleting book");
+    error.statusCode = 404;
+    throw error;
+  }
+  return;
 };
 
 module.exports = { dbGetGenres, dbDeleteGenre, dbCreateGenre };
