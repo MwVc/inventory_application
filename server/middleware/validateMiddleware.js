@@ -5,7 +5,7 @@ const validateBook = [
     .notEmpty()
     .withMessage("Title is required")
     .isLength({ min: 2 })
-    .withMessage("Title must be at keast 2 characters long"),
+    .withMessage("Title must be at least 2 characters long"),
   body("stock")
     .notEmpty()
     .withMessage("Stock is required")
@@ -22,7 +22,17 @@ const validateBook = [
     .isLength({ min: 2 })
     .withMessage("Author name must be at least 2 characters long")
     .matches(/^[A-Za-z\s]+$/)
-    .withMessage("Author must contain only letters"),
+    .withMessage("Author must contain letters only"),
 ];
 
-module.exports = { validateBook };
+const validateGenre = [
+  body("name")
+    .notEmpty()
+    .withMessage("Name is required")
+    .isLength({ min: 2 })
+    .withMessage("Name must me atleast 2 characters long ")
+    .matches(/^[A-Za-z\s]+$/)
+    .withMessage("Name must contain letters only"),
+];
+
+module.exports = { validateBook, validateGenre };
