@@ -17,6 +17,5 @@ export const updateBookById = async (bookData) => {
 };
 
 export const deleteBookById = async (bookId, password) => {
-  console.log(bookId, password);
   return apiClient.delete(`/books/${bookId}`, { data: { password: password } });
 };
