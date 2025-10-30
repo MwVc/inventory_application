@@ -1,8 +1,7 @@
 import axios from "axios";
-
 const apiClient = axios.create({
-  baseURL: "https://inventory-application-oeyg.onrender.com/api",
-  timeout: 5000,
+  baseURL: import.meta.env.VITE_BASE_URL,
+  timeout: 10000,
 });
 
 // intercept responses
