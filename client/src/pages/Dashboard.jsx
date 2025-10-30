@@ -51,6 +51,11 @@ export default function Dashboard() {
   const getBooks = async () => {
     try {
       const { data } = await fetchBooks();
+      // check if data is an array before setting state
+      if (!Array.isArray(data.data)) {
+        throw new Error("Expected an array");
+      }
+      // set books to state
       setBooks(data.data);
     } catch (error) {
       toast.error(`Failed to fetch books: ${error.message}`);
