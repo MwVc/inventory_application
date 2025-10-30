@@ -3,55 +3,55 @@
 const { books } = require("./data");
 const pool = require("./pool");
 
-const updatedBooks = books.map((book) => {
-  if (book.category === "Technology") {
-    book.category = 5;
-  } else if (book.category === "Fiction") {
-    book.category = 3;
-  } else if (book.category === "Science") {
-    book.category = 2;
-  } else if (book.category === "History") {
-    book.category = 4;
-  } else {
-    book.category = 1;
-  }
-
-  return book;
-});
-
-const createGenreTableQuery = `CREATE TABLE IF NOT EXISTS genres(
-id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-name VARCHAR(100) NOT NULL
-)`;
-
-const createBookTableQuery = `CREATE TABLE IF NOT EXISTS books(id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY, title VARCHAR(100) NOT NULL, stock INT NOT NULL DEFAULT 0, author VARCHAR(100) NOT NULL, genre_id INT REFERENCES genres(id) ON DELETE CASCADE)`;
-
+// queries
 const addGenreQuery = `INSERT INTO genres (name) VALUES ($1)`;
-
 const addBookQuery = `INSERT INTO books(title, stock, author, genre_id) VALUES ($1, $2, $3, $4) `;
 
-const categories = [
-  ...new Set(
-    books.map((book) => {
-      return book.category;
-    })
-  ),
-];
+///////////// The Algorithm ///////////////
+// insert all unique genres into the genres table in remote database
+// get all genres and their ids from the genres table
+// insert book matching the genre ids to the books genre name
+// loop books in each book
+
+// INSERT GENRES INTO DB function
+const insertGenres = async () => {
+  const genres = [...new Set(books.map((book) => book.category))];
+
+  for (const genre of genres) {
+    await pool.query(addGenreQuery, [genre]);
+  }
+};
+
+// FETCH GENRES FROM DATABASE
+const fetchGenres = async () => {
+  const { rows } = await pool.query("SELECT * FROM genres");
+  return rows;
+};
 
 (async () => {
-  try {
-    const res = await pool.query(createBookTableQuery);
-    console.log(`Table created successfully:${res.command}`);
+  // insert genres in db
+  await insertGenres();
 
-    for (const book of updatedBooks) {
-      pool.query(addBookQuery, [
-        book.title,
-        book.stock,
-        book.author,
-        book.category,
-      ]);
-    }
-  } catch (error) {
-    console.log(`Failed to create table: ${error}`);
+  // fetch genres from db to get genres and their ids
+  const genres = await fetchGenres();
+
+  const newBooks = books.map((book) => {
+    // find genre that matches books category
+    const matchedGenre = genres.find((genre) => genre.name === book.category);
+    // add a property genre_id that matches the books genre into book while deleting category out of the book
+    const { category, ...newBook } = { ...book, genre_id: matchedGenre.id };
+    // return the new book with genre_id as a property
+    return newBook;
+  });
+
+  // insert boooks into database
+
+  for (const newBook of newBooks) {
+    await pool.query(addBookQuery, [
+      newBook.title,
+      newBook.stock,
+      newBook.author,
+      newBook.genre_id,
+    ]);
   }
 })();
