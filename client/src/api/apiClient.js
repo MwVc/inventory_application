@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const apiClient = axios.create({
-  baseURL: "http://localhost:5000/api",
+  baseURL: "https://inventory-application-oeyg.onrender.com/api",
   timeout: 5000,
 });
 
