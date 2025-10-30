@@ -109,11 +109,15 @@ export default function BookForm({
         <option value="3">Fiction</option>
         <option value="4">History</option>
         <option value="5">Technology</option> */}
-        {genres.map((genre) => (
-          <option value={`${genre.id}`} key={genre.id}>
-            {genre.name}
-          </option>
-        ))}
+        {genres ? (
+          genres.map((genre) => (
+            <option value={`${genre.id}`} key={genre.id}>
+              {genre.name}
+            </option>
+          ))
+        ) : (
+          <option>Error</option>
+        )}
       </select>
 
       <input
