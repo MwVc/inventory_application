@@ -164,6 +164,8 @@ export default function Dashboard() {
   const handleDeleteGenre = (id) => {
     setItemToDelete({ id: [id], type: "genre" });
     setIsPopupOpen(true);
+    // refresh booklist after deleting genre
+    getBooks();
   };
 
   // function to delete genre
