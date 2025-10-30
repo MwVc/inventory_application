@@ -3,10 +3,11 @@ export default function BookList({ books, handleDeleteClick, startEditing }) {
     <div className="container">
       <h2 className="text-xl font-semibold mb-2">Book Inventory</h2>
 
-      {/* if there are no books */}
-      {books.length === 0 ? (
-        <p className="text-gray-500">No books available</p>
-      ) : (
+      {/*if books is undefined books?.length gives undefined(fasly)
+      if books is [] then .length is 0 (falsey)
+      if books has elements then .length > 0 (truthy)
+      */}
+      {books?.length ? (
         <table className="w-full border-collapse">
           <thead>
             <tr className="bg-gray-200 text-left">
@@ -44,6 +45,8 @@ export default function BookList({ books, handleDeleteClick, startEditing }) {
             })}
           </tbody>
         </table>
+      ) : (
+        <p className="text-gray-500">No books available</p>
       )}
     </div>
   );
