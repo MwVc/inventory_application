@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "server": "nodemon app"
+    "server": "nodemon app",
+    "start":"node app",
+    "populatedb": "node ./db/populatedb"
   },
   "keywords": [],
   "author": "Victor Mwadime <victormwadime@gmail.com>",
