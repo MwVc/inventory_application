@@ -1,6 +1,6 @@
 import axios from "axios";
 const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_BASE_URL,
+  baseURL: `http://localhost:5173/api`    || import.meta.env.VITE_BASE_URL,
   timeout: 10000,
 });
 
