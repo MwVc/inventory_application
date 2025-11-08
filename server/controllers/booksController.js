@@ -29,7 +29,7 @@ const getBookById = async (req, res, next) => {
   try {
     const book = await dbGetBookById(bookId);
     res.status(200).json({
-      success: false,
+      success: true,
       message: "Book fetched successfully",
       data: book,
     });
